@@ -65,6 +65,10 @@ def admin_grades(request: Request):
     user = get_user_from_session(request)
     if not user:
         return RedirectResponse("/login", status_code=302)
+    
+    if user["role"] not in ["admin", "teacher", "ta"]:
+        return HTMLResponse("Forbidden", status_code=403)
+
 
     grades = run_query(
         """
